@@ -3,7 +3,7 @@
 Unofficial [OfficeRnD](https://officernd.com) Version 1 - OpenAPI 3 specification.
 
 The [OfficeRnD Public API](https://developer.officernd.com) is designed to let 3rd party applications communicate
-with the core [OfficeRnD](https://officernd.com) platform. Unfortunatly the developer documentation is provided
+with the core [OfficeRnD](https://officernd.com) platform. Unfortunately the developer documentation is provided
 as-is, in HTML, without a specification.
 
 This unofficial specification is provided for all your code generation needs.
