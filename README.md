@@ -15,5 +15,5 @@ If you work for [OfficeRnD](https://officernd.com) we would be grateful if you f
 ## WARNING
 
 [OfficeRnD](https://officernd.com) only publish a major version number so this specification may not match the documentation
-or API if the endpoints used by [OfficeRnD](https://techspace.co) remain functional. It is provided on a best effort
+or API if the endpoints used by [Techspace](https://techspace.co) remain functional. It is provided on a best effort
 basis.
