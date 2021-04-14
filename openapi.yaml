@@ -1,0 +1,844 @@
+openapi: 3.0.3
+info:
+  title: OfficeRnD
+  description: Unofficial OfficeRnD specification.
+  contact:
+    email: technology-team@techspace.co
+  license:
+    name: MIT
+    url: https://github.com/techspaceco/officernd-api/LICENSE
+  version: 1.0.0
+externalDocs:
+  description: The OfficeRnD public API is designed to let 3rd party applications communicate with the core OfficeRnD platform.
+  url: https://developer.officernd.com
+servers:
+- url: 'https://app.officernd.com/api/v1/organizations/{organization}'
+  variables:
+    organization:
+      description: The organization slug.
+      default: example
+tags:
+- name: Offices
+  description: Office objects represent the separate physical locations in the organization. They are used to separate resources and members in a single organization.
+security: 
+  - oauth2: 
+    - 'officernd.api.read'
+paths:
+
+  /offices:
+    get:
+      summary: List
+      operationId: ListOffices
+      description: Retrieve all locations in the space.
+      tags:
+      - offices
+      parameters:
+      - name: name
+        in: query
+        required: false
+        description: The exact name of the item you are looking for. Also, you can use this property to perform a wildcard match.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Office'
+
+  /floors:
+    get:
+      summary: List
+      operationId: ListFloors
+      description: Represents floor data. Floors are used to classify different resources from the same location. It may contain floorplan data as well.
+      tags:
+      - offices
+      parameters:
+      - name: name
+        in: query
+        required: false
+        description: The exact name of the item you are looking for.
+        schema:
+          type: string
+      - name: office
+        in: query
+        required: false
+        description: Filter by office id.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Floor'
+
+components:
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: https://developer.officernd.com/#authentication
+      flows:
+        clientCredentials:
+          tokenUrl: https://identity.officernd.com/oauth/token
+          scopes:
+            'officernd.api.read': Provides read (GET) access to the OfficeRnD app endpoints for a particular organisation.
+            'officernd.api.write': Provides write (PUT, POST, DELETE) access to the OfficeRnD app endpoints for a particular organisation.
+  schemas:
+    Office:
+      type: object
+      required:
+        - name
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+          description: The name of the plan in hand. It appears everywhere in the system.
+        country:
+          type: string
+          description: The country part of the location address.
+        state:
+          type: string
+          description: The state part of the location address.
+        city:
+          type: string
+          description: The city part of the location address.
+        address:
+          type: string
+          description: The address part of the location address.
+        zip:
+          type: string
+          description: The zip code part of the location address.
+        timezone:
+          type: string
+          description: The timezone the location is at.
+        image:
+          type: string
+          description: The URL pointing to an image assigned to this location.
+        isOpen:
+          type: boolean
+          description: If true, the location is operational; if false or omitted the location is not working - either not open yet, or suspended for some other reason.
+        public:
+          type: boolean
+          description: If true, the location is shown in the members portal; if false or omitted the location is not displayed in the members portal.
+
+    Floor:
+      type: object
+      required:
+        - name
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+          description: The name of the floorplan - usually the floor number.
+        floor:
+          type: string
+          description: Optional floor number.
+        isOpen:
+          type: boolean
+          description: If true, the location is operational; if false or omitted, the location is not working - either not open yet, or suspended for some other reason.
+
+    Member:
+      type: object
+      required:
+        - name
+        - email
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+          description: The full name of the member
+        email:
+          type: string
+          description: The email address of the member
+        phone:
+          type: string
+          description: The primary phone number of the member
+        twitterHandle:
+          type: string
+          description: The twitter handle of the member
+        team:
+          type: string
+          description: Reference to the team the member belongs to
+        contactPerson:
+          type: boolean
+          description: True if the member is a contact person in his company
+        billingPerson:
+          type: boolean
+          description: True if the member is the billing person of his company and receives all the invoices
+        office:
+          type: string
+          description: Reference to the location the member belongs to. It will default to the only location if left empty
+        paymentDetails:
+          type: array
+          description: Array containing all the names of the payment details added to the member account
+        createdAt:
+          type: string
+          format: date-time
+          description: The date when the member has been created at.
+        createdBy:
+          type: string
+          description: The user that created the member.
+        modifiedAt:
+          type: string
+          format: date-time
+          description: The date when the member has been modified for the last time. Before the first modification, this field equals to the createdAt field.
+        modifiedBy:
+          type: string
+          description: The user that did the last modification to the member. Before the first modification, this field equals to the createdBy field.
+        status:
+          type: string
+          enum:
+            - active
+            - contact
+            - former
+          description: The member status. It could be active, contact or former
+        calculatedStatus:
+          type: string
+          description: The actual member status calculated by the platform. Please, refer to this article for more information https://help.officernd.com/hc/en-us/articles/360002210114-Member-Statuses-and-Labels
+
+    Team:
+      type: object
+      required:
+        - name
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+          description: The full name of the team
+        email:
+          type: string
+          description: The email address of the team
+        twitterHandle:
+          type: string
+          description: The twitter handle of the team
+        office:
+          type: string
+          description: Reference to the location the team belongs to. It will default to the only location if left empty
+        paymentDetails:
+          type: array
+          description: Array containing all the names of the payment details added to the team account
+        createdAt:
+          type: string
+          format: date-time
+          description: The date when the team has been created at.
+        createdBy:
+          type: string
+          description: The user that created the team.
+        modifiedAt:
+          type: string
+          format: date-time
+          description: The date when the team has been modified for the last time. Before the first modification, this field equals to the createdAt field.
+        modifiedBy:
+          type: string
+          description: The user that did the last modification to the team. Before the first modification, this field equals to the createdBy field.
+
+    Membership:
+      type: object
+      required:
+        - name
+        - price
+        - office
+        - plan
+        - startDate
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+          description: The display name of the membership. Used to generate invoice line items as well
+        price:
+          type: number
+          description: The monthly price of the membership
+        team:
+          type: string
+          description: Reference to the company (required if no member)
+        member:
+          type: string
+          description: Reference to the company (required if no team)
+        office:
+          type: string
+          description: A reference to the location the fee is issued for
+        plan:
+          type: string
+          description: A reference to the price plan assigned to the membership. It is used to determine the sales account when generating an invoice
+        isPersonal:
+          type: boolean
+          description: If true, the membership is billed to the assigned member and not to the company
+        startDate:
+          type: string
+          format: date-time
+          description: The membership starting date
+        endDate:
+          type: string
+          format: date-time
+          description: The last date of membership. If not set the membership is open-ended
+        discount:
+          type: string
+          description: A reference to a discount definition
+        discountAmount:
+          type: number
+          description: Manually granted discount for the specific membership
+        calculatedDiscountAmount:
+          type: number
+          description: The actual discount amount coming from a discount defintion or from a manually granted discount
+        discountedPrice:
+          type: number
+          description: The final membership unit price after granting the discount
+        locked:
+          type: boolean
+          description: If true, prevents editing the membership
+
+    Checkin:
+      type: object
+      required:
+        - member
+        - start
+        - office
+      properties:
+        _id:
+          type: string
+        member:
+          type: string
+          description: A reference to the member that is checked in.
+        team:
+          type: string
+          description: A reference to the team of the member that is checked in.
+        start:
+          type: string
+          format: date-time
+          description: The start date of the checkin.
+        end:
+          type: string
+          format: date-time
+          description: The end date of the checkin.
+        office:
+          type: string
+          description: A reference to the office where the member is checked in.
+
+    Booking:
+      type: object
+      required:
+        - start
+        - end
+        - resourceId
+      properties:
+        _id:
+          type: string
+        start:
+          type: object
+          required:
+            - dateTime
+          properties:
+            dateTime:
+              type: string
+              format: date-time
+              description: Start datetime of the booking in ISO date time format
+        end:
+          type: object
+          required:
+            - dateTime
+          properties:
+            dateTime:
+              type: string
+              format: date-time
+              description: End datetime of the booking in ISO date time format
+        timezone:
+          type: string
+          description: The booking resource timezone
+        source:
+          type: string
+          description: The origin/source of the booking
+        summary:
+          type: string
+          description: Booking title/summary
+        resourceId:
+          type: string
+          description: Reference to the booked resource
+        plan:
+          type: string
+          description: Reference to the resource rate used for the booking
+        team:
+          type: string
+          description: Reference to the company (required if no member)
+        member:
+          type: string
+          description: Reference to the member (required if no team)
+        description:
+          type: string
+          description: Long description of the booking
+        tentative:
+          type: boolean
+          description: True if the booking is not confirmed. Tentative booking are not charged.
+        free:
+          type: boolean
+          description: True if the booking is marked as free. If create a booking marked as free, no fees will be added for it.
+        fees:
+          type: array
+          description: Array of items describing how the booking will be charged for. Described below as BookingFee.
+        extras:
+          type: object
+          description: Dictionary with keys the IDs of the extras to add to the booking and values - the quantity of the extra
+        canceled:
+          type: boolean
+          description: Whether the booking got canceled or not. It also can be passed when calling the /summary endpoint.
+
+    BookingFee:
+      type: object
+      properties:
+        _id:
+          type: string
+        date:
+          type: string
+          format: date-time
+          description: The date of the occurrence the fee has been generated for
+        fee:
+          $ref: '#/components/schemas/Fee'
+          description: The actual charge generated for this occurrence.
+        credits:
+          type: array
+          description: The credits used for the booking
+        extraFees:
+          type: array
+          items:
+            $ref: '#/components/schemas/Fee'
+          description: Array of fees generated for the extras.
+
+    # BookingRequest:
+    #   type: object
+    #   required:
+    #     - start
+    #     - end
+    #     - count
+    #   properties:
+    #     start:
+    #       type: string
+    #       format: date-time
+    #       description: Start datetime of the booking request.
+    #     end:
+    #       type: string
+    #       format: date-time
+    #       description: End datetime of the booking request.
+    #     team:
+    #       type: string
+    #       description: Reference to the company (required if no member).
+    #     member:
+    #       type: string
+    #       description: Reference to the member (required if no team).
+    #     extras:
+    #       type: object
+    #       description: Dictionary with keys the IDs of the extras to add to the booking and values - the quantity of the extra.
+    #     source:
+    #       type: string
+    #       description: The origin/source of the bookings.
+    #     summary:
+    #       type: string
+    #       description: Booking title/summary.
+    #     description:
+    #       type: string
+    #       description: Long description of the booking.
+    #     tentative:
+    #       type: boolean
+    #       description: True if the booking is not confirmed. Tentative bookings are not charged.
+    #     free:
+    #       type: boolean
+    #       description: True if the booking is marked as free. If a booking is marked as free, no fees will be added for it.
+    #     size:
+    #       type: number
+    #       description: The resource size to be used.
+    #     count:
+    #       type: number
+    #       description: The count of bookings of this type to be made.
+    #     rate:
+    #       type: string
+    #       description: The resource rate to be used to lookup available resources.
+    #     resourceType:
+    #       type: string
+    #       description: The resource type to be used to lookup available resources.
+
+    Fee:
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+          description: The name of the charge. It will appear in the invoice line item.
+        price:
+          type: number
+          description: The unit price of the item described by the fee.
+        quantity:
+          type: number
+          description: The quantity described by the one-off charge. If omitted, 1 is assumed.
+        date:
+          type: string
+          format: date-time
+          description: The date when the service has been sold. This date is used to determine in which invoice the fee should be included.
+        team:
+          type: string
+          description: Reference to the company (required if no member)
+        member:
+          type: string
+          description: Reference to the company (required if no team)
+        office:
+          type: string
+          description: A reference to the location the fee is issued for
+        plan:
+          type: string
+          description: A reference to the price plan assigned to the fee. It is used to determine the sales account when generating an invoice
+        refundable:
+          type: boolean
+          description: If true, the one-off charge is counted as deposit and can be refunded later on.
+        billInAdvance:
+          type: boolean
+          description: If true, the one-off charge is billed in advance (respecting its date). By default one-off charges are billed in arears.
+        isPersonal:
+          type: boolean
+          description: If true, the one-off charge is billed to the assigned member and not to the company.
+
+    Plan:
+      type: object
+      required:
+        - name
+        - price
+        - locations
+        - type
+        - intervalLength
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+          description: The name of the plan in hand. It appears everywhere in the system.
+        description:
+          type: string
+          description: Text describing the plan. It will appear when users need to choose among different plans.
+        price:
+          type: number
+          description: The default unit price for the plan, depending if it is recurring plan or a one-off plan.
+        locations:
+          type: array
+          items:
+            type: string
+          description: List of all locations where the plan is present. If empty, all locations are assumed.
+        type:
+          type: string
+          enum:
+            - office
+            - desk
+            - hotdesk
+            - service
+          description: The type of the plan. It could be office, desk, hotdesk or service.
+        intervalLength:
+          type: string
+          enum:
+            - month
+            - once
+          description: The plan interval. It could be month or once.
+        code:
+          type: string
+          description: External identified for the plan. Usually used for accounting purposes.
+
+# TODO: The Rates structure is undocumented.
+
+    Resource:
+      type: object
+      required:
+        - name
+        - office
+        - room
+        - type
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+          description: The name of the resource in hand.
+        rate:
+          type: string
+          description: The resource rate used for pricing bookings for this particular resource.
+        office:
+          type: string
+          description: The location the resource is assigned to
+        room:
+          type: string
+          description: The floorplan the resource is assigned to
+        type:
+          type: string
+          description: The type of the resource.
+        parents:
+          type: array
+          items:
+            type: string
+          description: Array of resource ids which are parents of the current resource. Parents are only present for resource types with hierarchicalResourcesEnabled option set to true.
+
+    ResourceType:
+      type: object
+      required:
+        - title
+        - type
+        - target
+      properties:
+        _id:
+          type: string
+        title:
+          type: string
+          description: The name of the resource type
+        type:
+          type: string
+          description: A unique key that links the resource type to a zone type.
+        target:
+          type: string
+          description: The floorplan object type of the resource.
+        bookingMode:
+          type: string
+          enum:
+            - time
+            - date
+          description: Booking mode of the resource type. One of types listed above.
+        checkinMode:
+          type: string
+          enum:
+            - half_day
+            - day
+          description: The check-in mode of the resource type (applicable to hotdesk type only). One of types listed above.
+        icon:
+          type: string
+          description: An icon to represent the resource type on the portal.
+        color:
+          type: string
+          description: A color that color codes the resource type on the floorplan.
+        canBook:
+          type: boolean
+          description: If true, the resource type is available for booking on a calendar.
+        canAssign:
+          type: boolean
+          description: If true, memberships is assignable to the resource type.
+        primary:
+          type: boolean
+          description: If true, the resource occupancy can be tracked in the Occupancy section of the Dashboard.
+        hierarchicalResourcesEnabled:
+          type: boolean
+          description: If true, the resource type allows parent/child relationship (applicable to meeting_room type only).
+
+# TODO: The Contract structure is undocumented.
+
+# TODO: The Credit structure is undocumented.
+
+# TODO: The Lead structure is undocumented.
+
+    Post:
+      type: object
+      required:
+        - type
+        - description
+        - locations
+      properties:
+        _id:
+          type: string
+        type:
+          type: string
+          description: The type of the post - currently the only supported type is info.
+        description:
+          type: string
+          description: The content of the post.
+        locations:
+          type: array
+          items:
+            type: string
+          description: List of locations for which this post is relevant. If you want to be for all locations - just pass an empty array []
+        url:
+          type: string
+          description: The URL for the image included in the post headline.
+        team:
+          type: string
+          description: A reference to the company that creates the post.
+        member:
+          type: string
+          description: A reference to the member that creates the post.
+
+    Event:
+      type: object
+      properties:
+        _id:
+          type: string
+        start:
+          type: string
+          format: date-time
+          description: The start date and time of the event. Must be a ISO-formatted in UTC.
+        end:
+          type: string
+          format: date-time
+          description: The end date and time of the event. Must be a ISO-formatted in UTC.
+        office:
+          type: string
+          description: A reference to the location the invoiced is issued by.
+        team:
+          type: string
+          description: A reference to the company that organizes the event.
+        member:
+          type: string
+          description: A reference to the member that organizes the event.
+        title:
+          type: string
+          description: A brief title of the event.
+        description:
+          type: string
+          description: A detailed description of the event.
+        where:
+          type: string
+          description: Additional information for the location of the event.
+        timezone:
+          type: string
+          description: The timezone of the event
+        image:
+          type: string
+          description: A url to an image for the event.
+        limit:
+          type: number
+          description: The number of participants that this event will host.
+
+# TODO: The Visit structure is undocumented.
+
+    Visitor:
+      type: object
+      required:
+        - name
+        - member
+        - type
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+          description: The full name of the visitor
+        email:
+          type: string
+          description: The email address of the visitor
+        member:
+          type: string
+          description: Reference to the member that the visitor is visiting
+        type:
+          type: string
+          enum:
+            - reception
+            - preregistration
+          description: Visitor type.
+        description:
+          type: string
+          description: Description of the visitor
+        phone:
+          type: string
+          description: The phone number of the visitor
+
+    Charge:
+      type: object
+      required:
+        - amount
+        - date
+        - status
+        - reference
+      properties:
+        _id:
+          type: string
+        amount:
+          type: number
+          description: The amount of the transaction.
+        date:
+          type: string
+          format: date-time
+          description: The exact date of the transaction.
+        status:
+          type: string
+          enum:
+            - success
+            - pending
+            - fail
+          description: The status of the transaction. One of the following success, pending, fail.
+        reference:
+          type: string
+          description: Human readable description of the transaction.
+        source:
+          type: string
+          description: The system the charge originated at. OfficeR&D by default
+        account:
+          type: string
+          description: The name of the account where money are depositet at.
+        integration:
+          type: object
+          description: Present if charge is collected via payment gateway. Its property providerChargeId is set to the gateway charge ID
+        createdAt:
+          type: string
+          format: date-time
+          description: The date when the charge has been created at.
+        createdBy:
+          type: string
+          description: The user that created the charge.
+        modifiedAt:
+          type: string
+          format: date-time
+          description: The date when the charge has been modified for the last time. Before the first modification, this field equals to the createdAt field.
+        modifiedBy:
+          type: string
+          description: The user that did the last modification to the charge. Before the first modification, this field equals to the createdBy field.
+        payment:
+          type: string
+          description: The invoice or credit note the charge is associated with.
+        office:
+          type: string
+          description: The location of the invoice or credit note the charge is assigned to.
+
+# TODO: The Network structure is undocumented.
+
+# TODO: All reporting structures and endpoints.
+
+# TODO: The Authentication structure is undocumented.
+
+# TODO: The Signup structure is undocumented.
+
+# TODO: Checkout structures and endpoints.
+
+# TODO: The Subscribe structure is undocumented.
+
+# TODO: User structures and endpoints.
+
+# TODO: Signup structures and endpoints.
+
+# TODO: Hosted payment gateway structures and endpoints.
+
+    WebhookEvent:
+      type: object
+      required:
+        - object
+      properties:
+        event:
+          type: string
+          description: unique identifier of the event instance
+        eventType:
+          type: string
+          description: The event type that occurred in OfficeRnD
+        data:
+          type: object
+          description: event payload describing the event
+          properties:
+            object:
+              type: object
+              description: resource that has been added/changed/removed
+            previousAttributes:
+              type: object
+              description: field is only present for updated events. The object describing all changed attributes and their previous values
+          additionalProperties: true
+        createdAt:
+          type: string
+          format: date-time
+          description: The time of the event occurrence.
