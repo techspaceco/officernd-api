@@ -49,6 +49,28 @@ paths:
                 items:
                   $ref: '#/components/schemas/Office'
 
+  /offices/{officeId}:
+    get:
+      summary: Get
+      operationId: GetOffice
+      description: Retrieve an individual location.
+      tags:
+      - offices
+      parameters:
+      - name: officeId
+        in: path
+        required: true
+        description: Primary key.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Office'
+
   /floors:
     get:
       summary: List
@@ -78,6 +100,695 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Floor'
+
+  /floors/{floorId}:
+    get:
+      summary: Get
+      operationId: GetFloor
+      description: Retrieve an individual floor.
+      tags:
+      - floors
+      parameters:
+      - name: floorId
+        in: path
+        required: true
+        description: Primary key.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Floor'
+
+  /members:
+    get:
+      summary: List
+      operationId: ListMembers
+      description: Represents floor data. Floors are used to classify different resources from the same location. It may contain floorplan data as well.
+      tags:
+      - offices
+      parameters:
+      - name: modifiedAt.$gt
+        in: query
+        required: false
+        description: All items created or last modified after the pointed date
+        schema:
+          type: string
+          format: date-time
+      - name: modifiedAt.$lt
+        in: query
+        required: false
+        description: All items created or last modified before the pointed date
+        schema:
+          type: string
+          format: date-time
+      - name: createdAt.$gt
+        in: query
+        required: false
+        description: All items created after the pointed date
+        schema:
+          type: string
+          format: date-time
+      - name: createdAt.$lt
+        in: query
+        required: false
+        description: All items created before the pointed date
+        schema:
+          type: string
+          format: date-time
+      - name: office
+        in: query
+        required: false
+        description: Filter by office id.
+        schema:
+          type: string
+      - name: team
+        in: query
+        required: false
+        description: Filter by team id.
+        schema:
+          type: string
+      - name: name
+        in: query
+        required: false
+        description: The exact name of the item you are looking for. Also, you can use this property to perform a wildcard match https://developer.officernd.com/#Wildcard-matches.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Member'
+    post:
+      summary: Create
+      operationId: CreateMembers
+      description: Add new members.
+      tags:
+      - members
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Member'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Member'
+    delete:
+      summary: Delete
+      operationId: DeleteMembers
+      description: You can delete members by passing array of IDs to be deleted as request body.
+      tags:
+      - members
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+      responses:
+        '200':
+          description: OK
+
+  /members/{memberId}:
+    get:
+      summary: Get
+      operationId: GetMember
+      description: Retrieve an individual member.
+      tags:
+      - members
+      parameters:
+      - name: memberId
+        in: path
+        required: true
+        description: Primary key.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Member'
+    put:
+      summary: Update
+      operationId: UpdateMember
+      description: Retrieve an individual member.
+      tags:
+      - members
+      parameters:
+      - name: memberId
+        in: path
+        required: true
+        description: Primary key.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Member'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Member'
+
+  /teams:
+    get:
+      summary: List
+      operationId: ListTeams
+      description: Team objects allow you to keep your companies' data in single place, track memberships, invoices, charges, fees, and etc.
+      tags:
+      - offices
+      parameters:
+      - name: modifiedAt.$gt
+        in: query
+        required: false
+        description: All items created or last modified after the pointed date
+        schema:
+          type: string
+          format: date-time
+      - name: modifiedAt.$lt
+        in: query
+        required: false
+        description: All items created or last modified before the pointed date
+        schema:
+          type: string
+          format: date-time
+      - name: createdAt.$gt
+        in: query
+        required: false
+        description: All items created after the pointed date
+        schema:
+          type: string
+          format: date-time
+      - name: createdAt.$lt
+        in: query
+        required: false
+        description: All items created before the pointed date
+        schema:
+          type: string
+          format: date-time
+      - name: office
+        in: query
+        required: false
+        description: Filter by office id.
+        schema:
+          type: string
+      - name: name
+        in: query
+        required: false
+        description: The exact name of the item you are looking for. Also, you can use this property to perform a wildcard match https://developer.officernd.com/#Wildcard-matches.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Team'
+    post:
+      summary: Create
+      operationId: CreateTeams
+      description: Add new teams.
+      tags:
+      - teams
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Team'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Team'
+    delete:
+      summary: Delete
+      operationId: DeleteTeams
+      description: You can delete teams by passing array of IDs to be deleted as request body.
+      tags:
+      - teams
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+      responses:
+        '200':
+          description: OK
+
+  /teams/{teamId}:
+    get:
+      summary: Get
+      operationId: GetTeam
+      description: Retrieve an individual team.
+      tags:
+      - teams
+      parameters:
+      - name: teamId
+        in: path
+        required: true
+        description: Primary key.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+    put:
+      summary: Update
+      operationId: UpdateTeam
+      description: Retrieve an individual team.
+      tags:
+      - teams
+      parameters:
+      - name: teamId
+        in: path
+        required: true
+        description: Primary key.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Team'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+
+  /memberships:
+    get:
+      summary: List
+      operationId: ListMemberships
+      description: Represents floor data. Floors are used to classify different resources from the same location. It may contain floorplan data as well.
+      tags:
+      - offices
+      parameters:
+      - name: $populate
+        in: query
+        required: false
+        description: Comma-separated list of all properties to be populated. Only id references can be populated. Refer to Populating queries section for more information.
+        schema:
+          type: string
+      - name: team
+        in: query
+        required: false
+        description: Filter by team id.
+        schema:
+          type: string
+      - name: member
+        in: query
+        required: false
+        description: Filter by member id
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Membership'
+    post:
+      summary: Create
+      operationId: CreateMemberships
+      description: Add new memberships.
+      tags:
+      - memberships
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Membership'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Membership'
+    delete:
+      summary: Delete
+      operationId: DeleteMemberships
+      description: You can delete memberships by passing array of IDs to be deleted as request body.
+      tags:
+      - memberships
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+      responses:
+        '200':
+          description: OK
+
+  /memberships/{membershipId}:
+    get:
+      summary: Get
+      operationId: GetMembership
+      description: Retrieve an individual membership.
+      tags:
+      - memberships
+      parameters:
+      - name: membershipId
+        in: path
+        required: true
+        description: Primary key.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Membership'
+    put:
+      summary: Update
+      operationId: UpdateMembership
+      description: Retrieve an individual membership.
+      tags:
+      - memberships
+      parameters:
+      - name: membershipId
+        in: path
+        required: true
+        description: Primary key.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Membership'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Membership'
+
+  /checkins:
+    get:
+      summary: List
+      operationId: ListCheckins
+      description: Represents floor data. Floors are used to classify different resources from the same location. It may contain floorplan data as well.
+      tags:
+      - offices
+      parameters:
+      - name: modifiedAt.$gt
+        in: query
+        required: false
+        description: All items created or last modified after the pointed date
+        schema:
+          type: string
+          format: date-time
+      - name: modifiedAt.$lt
+        in: query
+        required: false
+        description: All items created or last modified before the pointed date
+        schema:
+          type: string
+          format: date-time
+      - name: createdAt.$gt
+        in: query
+        required: false
+        description: All items created after the pointed date
+        schema:
+          type: string
+          format: date-time
+      - name: createdAt.$lt
+        in: query
+        required: false
+        description: All items created before the pointed date
+        schema:
+          type: string
+          format: date-time
+      - name: office
+        in: query
+        required: false
+        description: Filter by office id.
+        schema:
+          type: string
+      - name: team
+        in: query
+        required: false
+        description: Filter by team id.
+        schema:
+          type: string
+      - name: name
+        in: query
+        required: false
+        description: The exact name of the item you are looking for. Also, you can use this property to perform a wildcard match https://developer.officernd.com/#Wildcard-matches.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Checkin'
+
+  /checkins/{memberId}:
+    post:
+      summary: Create
+      operationId: CreateCheckins
+      description: |
+        Check in member with id = {memberId}.
+        By default, the request checks in the member with start date now, no end date and the office where the member is registered.
+        You can optionally provide start, end and office in the request body. Member checkins with start date before the current date and no end date are not allowed.
+      tags:
+      - checkins
+      parameters:
+      - name: memberId
+        in: path
+        required: true
+        description: Member primary key.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Checkin'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Checkin'
+
+  /checkins/checkout/{memberId}:
+    post:
+      summary: Create
+      operationId: CreateCheckinCheckout
+      description: |
+        Check out member with id = {memberId}.
+        The request will update current checkins end date with now if the checkins don't have an end date.
+      tags:
+      - checkins
+      parameters:
+      - name: memberId
+        in: path
+        required: true
+        description: Member primary key.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Checkin'
+
+  /bookings:
+    get:
+      summary: List
+      operationId: ListBookings
+      description: Retrieve all bookings.
+      tags:
+      - offices
+      parameters:
+      - name: office
+        in: query
+        required: false
+        description: Filter by office id.
+        schema:
+          type: string
+      - name: member
+        in: query
+        required: false
+        description: Filter by member id.
+        schema:
+          type: string
+      - name: team
+        in: query
+        required: false
+        description: Filter by team id.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Booking'
+    post:
+      summary: Create
+      operationId: CreateBookings
+      description: Add one or many bookings.
+      tags:
+      - bookings
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Booking'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Booking'
+
+  /bookings/checkout:
+    post:
+      summary: Create
+      operationId: CreateBookingsCheckout
+      description: |
+        Create bookings without specifying resources, but search parameters instead.
+      tags:
+      - checkins
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                required:
+                  - start
+                  - end
+                  - count
+                properties:
+                  start:
+                    type: string
+                    format: date-time
+                    description: Start datetime of the booking request.
+                  end:
+                    type: string
+                    format: date-time
+                    description: End datetime of the booking request.
+                  team:
+                    type: string
+                    description: Reference to the company (required if no member).
+                  member:
+                    type: string
+                    description: Reference to the member (required if no team).
+                  extras:
+                    type: object
+                    description: Dictionary with keys the IDs of the extras to add to the booking and values - the quantity of the extra.
+                  source:
+                    type: string
+                    description: The origin/source of the bookings.
+                  summary:
+                    type: string
+                    description: Booking title/summary.
+                  description:
+                    type: string
+                    description: Long description of the booking.
+                  tentative:
+                    type: boolean
+                    description: True if the booking is not confirmed. Tentative bookings are not charged.
+                  free:
+                    type: boolean
+                    description: True if the booking is marked as free. If a booking is marked as free, no fees will be added for it.
+                  size:
+                    type: number
+                    description: The resource size to be used.
+                  count:
+                    type: number
+                    description: The count of bookings of this type to be made.
+                  rate:
+                    type: string
+                    description: The resource rate to be used to lookup available resources.
+                  resourceType:
+                    type: string
+                    description: The resource type to be used to lookup available resources.       
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Booking'
 
 components:
   securitySchemes:
@@ -413,58 +1124,6 @@ components:
           items:
             $ref: '#/components/schemas/Fee'
           description: Array of fees generated for the extras.
-
-    # BookingRequest:
-    #   type: object
-    #   required:
-    #     - start
-    #     - end
-    #     - count
-    #   properties:
-    #     start:
-    #       type: string
-    #       format: date-time
-    #       description: Start datetime of the booking request.
-    #     end:
-    #       type: string
-    #       format: date-time
-    #       description: End datetime of the booking request.
-    #     team:
-    #       type: string
-    #       description: Reference to the company (required if no member).
-    #     member:
-    #       type: string
-    #       description: Reference to the member (required if no team).
-    #     extras:
-    #       type: object
-    #       description: Dictionary with keys the IDs of the extras to add to the booking and values - the quantity of the extra.
-    #     source:
-    #       type: string
-    #       description: The origin/source of the bookings.
-    #     summary:
-    #       type: string
-    #       description: Booking title/summary.
-    #     description:
-    #       type: string
-    #       description: Long description of the booking.
-    #     tentative:
-    #       type: boolean
-    #       description: True if the booking is not confirmed. Tentative bookings are not charged.
-    #     free:
-    #       type: boolean
-    #       description: True if the booking is marked as free. If a booking is marked as free, no fees will be added for it.
-    #     size:
-    #       type: number
-    #       description: The resource size to be used.
-    #     count:
-    #       type: number
-    #       description: The count of bookings of this type to be made.
-    #     rate:
-    #       type: string
-    #       description: The resource rate to be used to lookup available resources.
-    #     resourceType:
-    #       type: string
-    #       description: The resource type to be used to lookup available resources.
 
     Fee:
       type: object
