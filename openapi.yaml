@@ -790,6 +790,231 @@ paths:
                 items:
                   $ref: '#/components/schemas/Booking'
 
+  /bookings/{bookingId}:
+    get:
+      summary: Get
+      operationId: GetBooking
+      description: Retrieve a booking.
+      tags:
+      - offices
+      parameters:
+      - name: bookingId
+        in: path
+        required: true
+        description: Booking primary key.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Booking'
+    put:
+      summary: Update
+      operationId: UpdateBooking
+      description: Update a single booking.
+      tags:
+      - bookings
+      parameters:
+      - name: bookingId
+        in: path
+        required: true
+        description: Booking primary key.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Booking'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Booking'
+    delete:
+      summary: Delete
+      operationId: DeleteBooking
+      description: Deleting the booking will remove the associated fees and will return the used credits the the company/member account.
+      tags:
+      - bookings
+      parameters:
+      - name: bookingId
+        in: path
+        required: true
+        description: Booking primary key.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+
+  /bookings/{bookingId}/cancel:
+    post:
+      summary: Cancel
+      operationId: CancelBooking
+      description: |
+        Cancel a booking that was already confirmed. Booking cancellation may trigger a notification or generate a cancellation fee based on the cancellation policy.
+        If you want to suppress those, you should use the silent and skipCancellationPolicy query string parameters.
+      tags:
+      - bookings
+      parameters:
+      - name: bookingId
+        in: path
+        required: true
+        description: Booking primary key.
+        schema:
+          type: string
+      - name: silent
+        in: query
+        required: false
+        description: Whether to send notifications to the member. If true, a notification will be sent. If false or not passed at all, the notification will be sent as normal.
+        schema:
+          type: boolean
+      - name: skipCancellationPolicy
+        in: query
+        required: false
+        description: Whether to calculate a cancellation fee. If true, the cancellation fee will be skipped. If false or not passed at all, a cancellation fee will be generated based on the cancellation policy for the resource.
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: OK
+
+  # TODO: /bookings/summary
+  # TODO: /bookings/checkout-summary
+  # TODO: /bookings/occurences
+  # TODO: /fees
+  # TODO: /fees/{feeId}
+  # TODO: /plans
+  # TODO: /plans/{planId}
+  # TODO: /rates
+  # TODO: /{rateId}
+  # TODO: /resources
+  # TODO: /resources/{resourceId}
+  # TODO: /resource-types
+ 
+  /contracts:
+    get:
+      summary: List
+      operationId: ListContracts
+      description: Retrieve all contracts.
+      tags:
+      - contracts
+      parameters:
+      - name: office
+        in: query
+        required: false
+        description: Filter by office id.
+        schema:
+          type: string
+      - name: team
+        in: query
+        required: false
+        description: Filter by team id.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contract'
+    post:
+      summary: Create
+      operationId: CreateContract
+      description: Create a single contract.
+      tags:
+      - contracts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Contract'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Contract'
+
+  /contracts/{contractId}:
+    get:
+      summary: Get
+      operationId: GetContract
+      description: Retrieve a contract by ID.
+      tags:
+      - contracts
+      parameters:
+      - name: contractId
+        in: path
+        required: true
+        description: Contract primary key.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contract'
+
+    # TODO: /contracts/{contractId}/sign
+    # TODO: /contracts/{contractId}/terminate
+    # TODO: /credit-accounts
+    # TODO: /leads
+    # TODO: /posts
+    # TODO: /posts/{eventId}
+    # TODO: /events
+    # TODO: /events/{eventId}
+    # TODO: /visits
+    # TODO: /visits/{visitId}
+    # TODO: /visitors
+    # TODO: /payments
+    # TODO: /payments/{paymentId}
+    # TODO: /payments/{paymentId}/documents
+    # TODO: /payments/{paymentId}/charges
+    # TODO: /payments/{paymentId}/charges/{chargeId}
+    # TODO: /charges
+    # TODO: /network/auth
+    # TODO: /network/checkin
+    # TODO: /network/checkout
+    # TODO: /reports/occupancy
+    # TODO: /reports/occupancy/by-customer
+    # TODO: /reports/occupancy/assignable-stats
+    # TODO: /auth/member
+    # TODO: /auth/signin
+    # TODO: /signup
+    # TODO: /checkout
+    # TODO: /checkout/summary
+    # TODO: /subscribe
+    # TODO: /user/visits
+    # TODO: /user/visits/{visitId}
+    # TODO: /user/visitors/suggest
+    # TODO: /user/visitors/create
+    # TODO: /user/visitors/{visitorId}
+    # TODO: /user/member
+    # TODO: /user/member/suggest
+    # TODO: /user/checkins
+    # TODO: /user/checkins/visitor/{visitorId}
+
 components:
   securitySchemes:
     oauth2:
@@ -1290,7 +1515,62 @@ components:
           type: boolean
           description: If true, the resource type allows parent/child relationship (applicable to meeting_room type only).
 
-# TODO: The Contract structure is undocumented.
+    # The contract structure is undocumented, we've gone by the example response for now.
+    Contract:
+      type: object
+      # TODO: Required fields are unknown.
+      properties:
+        _id:
+          type: string
+        resourcesTotal:
+          type: number
+        servicesTotal:
+          type: number
+        baseTotal:
+          type: number
+        total:
+          type: number
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        office:
+          type: string
+          description: The office primary key.
+        number:
+          type: string
+        team:
+          type: string
+          description: The team primary key.
+        documentType:
+          type: string
+        organization:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        plans:
+          type: array
+          items:
+            $ref: '#/components/schemas/Plan'
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/Resource'
+        notice:
+          type: object
+          properties:
+            months:
+              type: number
+        type:
+          type: string
+        status:
+          type: string
 
 # TODO: The Credit structure is undocumented.
 
@@ -1457,23 +1737,15 @@ components:
           type: string
           description: The location of the invoice or credit note the charge is assigned to.
 
-# TODO: The Network structure is undocumented.
-
-# TODO: All reporting structures and endpoints.
-
-# TODO: The Authentication structure is undocumented.
-
-# TODO: The Signup structure is undocumented.
-
-# TODO: Checkout structures and endpoints.
-
-# TODO: The Subscribe structure is undocumented.
-
-# TODO: User structures and endpoints.
-
-# TODO: Signup structures and endpoints.
-
-# TODO: Hosted payment gateway structures and endpoints.
+    # TODO: The Network structure is undocumented.
+    # TODO: All reporting structures and endpoints.
+    # TODO: The Authentication structure is undocumented.
+    # TODO: The Signup structure is undocumented.
+    # TODO: Checkout structures and endpoints.
+    # TODO: The Subscribe structure is undocumented.
+    # TODO: User structures and endpoints.
+    # TODO: Signup structures and endpoints.
+    # TODO: Hosted payment gateway structures and endpoints.
 
     WebhookEvent:
       type: object
