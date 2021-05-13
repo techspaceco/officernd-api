@@ -1069,6 +1069,7 @@ components:
       type: object
       required:
         - name
+        - office
       properties:
         _id:
           type: string
@@ -1081,6 +1082,15 @@ components:
         isOpen:
           type: boolean
           description: If true, the location is operational; if false or omitted, the location is not working - either not open yet, or suspended for some other reason.
+        office:
+          type: string
+          description: A reference to the location the floor is part of
+        area:
+          type: number
+          description: The floor area of this part of the building.
+        targetRevenue:
+          type: number
+          description: The target revenue for the specified floor
 
     Member:
       type: object
