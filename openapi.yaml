@@ -1188,6 +1188,44 @@ components:
         modifiedBy:
           type: string
           description: The user that did the last modification to the team. Before the first modification, this field equals to the createdBy field.
+        # Both billing and address details are current not documented in the official public API but required for a lot of useful integrations.
+        details:
+          type: object
+          description: (UNDOCUMENTED) Billing details. If not provided address details will be used.
+          properties:
+            currency:
+              type: string
+            currencyConversionRate:
+              type: number
+            paymentMethod:
+              type: string
+            date:
+              type: number
+              description: Day of the month to bill.
+            membershipsPONumber:
+              type: string
+            name:
+              type: string
+            vatId:
+              type: string
+            regId:
+              type: string
+              description: Business registration number.
+        address:
+          type: object
+          description: (UNDOCUMENTED) Registered address.
+          properties:
+            address:
+              type: string
+            city:
+              type: string
+            state:
+              type: string
+            zip:
+              type: string
+            country:
+              type: string
+
 
     Membership:
       type: object
