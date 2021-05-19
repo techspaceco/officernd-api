@@ -1005,7 +1005,7 @@ paths:
         description: One of the possible resource types.
         schema:
           type: string
-      - name: type
+      - name: target
         in: query
         required: false
         description: One of the possible resource target types.
