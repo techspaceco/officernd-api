@@ -900,9 +900,126 @@ paths:
   # TODO: /plans/{planId}
   # TODO: /rates
   # TODO: /{rateId}
-  # TODO: /resources
-  # TODO: /resources/{resourceId}
-  # TODO: /resource-types
+
+  /resources:
+    get:
+      summary: List
+      operationId: ListResources
+      description: |
+        Resource objects describe all type of bookable (short term bookings or long term assignments) resources in the system.
+
+        Resource types can be extended and modified, but the default ones are:
+
+        meeting rooms - meeting_room
+        private offices - team_room
+        private office desk - desk_tr
+        dedicated desks - desk
+        hot desks - hotdesk
+        You can retrieve individual resources as well as a list of all your resources or all of a specific type.
+      tags:
+      - resources
+      parameters:
+      - name: office
+        in: query
+        required: false
+        description: Filter by office id.
+        schema:
+          type: string
+      - name: name
+        in: query
+        required: false
+        description: The exact name of the item you are looking for. Also, you can use this property to perform a wildcard match.
+        schema:
+          type: string
+      - name: type
+        in: query
+        required: false
+        description: One of the possible resource types.
+        schema:
+          type: string
+      # TODO: availableFrom, availableTo.
+      # Unknown format. The documentation just says "date" which could be anything.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Resource'
+
+  /resources/{resourceId}:
+    get:
+      summary: Get
+      operationId: GetResource
+      description: Retrieve a resource by ID.
+      tags:
+      - resources
+      parameters:
+      - name: resourceId
+        in: path
+        required: true
+        description: Resource primary key.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
+
+  /resource-types:
+    get:
+      summary: List
+      operationId: ListResourceTypes
+      description: |
+        Resource types can be extended and modified, but the default ones are:
+
+        meeting rooms - meeting_room
+        private offices - team_room
+        private office desk - desk_tr
+        dedicated desks - desk
+        hot desks - hotdesk
+        Target types (Floorplan object type):
+
+        desk
+        zone
+        Booking modes:
+
+        time
+        date
+        Check-in modes:
+
+        half_day
+        day
+        You can retrieve a list of all your resource types.
+      tags:
+      - resource-types
+      parameters:
+      - name: type
+        in: query
+        required: false
+        description: One of the possible resource types.
+        schema:
+          type: string
+      - name: type
+        in: query
+        required: false
+        description: One of the possible resource target types.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ResourceType'
  
   /contracts:
     get:
@@ -1199,6 +1316,12 @@ components:
               type: number
             paymentMethod:
               type: string
+              enum:
+                -
+                - Cash
+                - Bank Transfer
+                - POS
+                - Cheque
             date:
               type: number
               description: Day of the month to bill.
