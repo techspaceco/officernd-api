@@ -1181,6 +1181,15 @@ components:
         public:
           type: boolean
           description: If true, the location is shown in the members portal; if false or omitted the location is not displayed in the members portal.
+        # Properties, slug and code are currently not documented in the official public API but required for a lot of useful integrations.
+        properties:
+          $ref: '#/components/schemas/Properties'
+        slug:
+          type: string
+          description: Unique URL slug.
+        code:
+          type: string
+          description: Unique code.
 
     Floor:
       type: object
@@ -1208,6 +1217,9 @@ components:
         targetRevenue:
           type: number
           description: The target revenue for the specified floor
+        # Properties are currently not documented in the official public API but required for a lot of useful integrations.
+        properties:
+          $ref: '#/components/schemas/Properties'
 
     Member:
       type: object
@@ -1268,6 +1280,9 @@ components:
         calculatedStatus:
           type: string
           description: The actual member status calculated by the platform. Please, refer to this article for more information https://help.officernd.com/hc/en-us/articles/360002210114-Member-Statuses-and-Labels
+        # Properties are currently not documented in the official public API but required for a lot of useful integrations.
+        properties:
+          $ref: '#/components/schemas/Properties'
 
     Team:
       type: object
@@ -1305,7 +1320,9 @@ components:
         modifiedBy:
           type: string
           description: The user that did the last modification to the team. Before the first modification, this field equals to the createdBy field.
-        # Both billing and address details are current not documented in the official public API but required for a lot of useful integrations.
+        # Properties, billing and address details are currently not documented in the official public API but required for a lot of useful integrations.
+        properties:
+          $ref: '#/components/schemas/Properties'
         details:
           type: object
           description: (UNDOCUMENTED) Billing details. If not provided address details will be used.
@@ -1405,6 +1422,9 @@ components:
         locked:
           type: boolean
           description: If true, prevents editing the membership
+        # Properties are currently not documented in the official public API but required for a lot of useful integrations.
+        properties:
+          $ref: '#/components/schemas/Properties'
 
     Checkin:
       type: object
@@ -1499,6 +1519,10 @@ components:
         canceled:
           type: boolean
           description: Whether the booking got canceled or not. It also can be passed when calling the /summary endpoint.
+        # Properties are currently not documented in the official public API but required for a lot of useful integrations.
+        properties:
+          $ref: '#/components/schemas/Properties'
+
 
     BookingFee:
       type: object
@@ -1560,6 +1584,9 @@ components:
         isPersonal:
           type: boolean
           description: If true, the one-off charge is billed to the assigned member and not to the company.
+        # Properties are currently not documented in the official public API but required for a lot of useful integrations.
+        properties:
+          $ref: '#/components/schemas/Properties'
 
     Plan:
       type: object
@@ -1603,6 +1630,9 @@ components:
         code:
           type: string
           description: External identified for the plan. Usually used for accounting purposes.
+        # Properties are currently not documented in the official public API but required for a lot of useful integrations.
+        properties:
+          $ref: '#/components/schemas/Properties'
 
 # TODO: The Rates structure is undocumented.
 
@@ -1636,6 +1666,9 @@ components:
           items:
             type: string
           description: Array of resource ids which are parents of the current resource. Parents are only present for resource types with hierarchicalResourcesEnabled option set to true.
+        # Properties are currently not documented in the official public API but required for a lot of useful integrations.
+        properties:
+          $ref: '#/components/schemas/Properties'
 
     ResourceType:
       type: object
@@ -1742,6 +1775,9 @@ components:
           type: string
         status:
           type: string
+        # Properties are currently not documented in the official public API but required for a lot of useful integrations.
+        properties:
+          $ref: '#/components/schemas/Properties'
 
 # TODO: The Credit structure is undocumented.
 
@@ -1944,3 +1980,7 @@ components:
           type: string
           format: date-time
           description: The time of the event occurrence.
+
+    Properties:
+      type: object
+      description: (UNDOCUMENTED) custom properties associated with a record. The CRUD API to create custom properties is also undocumented.
