@@ -1675,6 +1675,38 @@ components:
         # Properties are currently not documented in the official public API but required for a lot of useful integrations.
         properties:
           $ref: '#/components/schemas/Properties'
+        image:
+          type: string
+          description: (UNDOCUMENTED) Image (useful for meeting rooms).
+        number:
+          type: number
+          description: (UNDOCUMENTED) Capacity if the resource is a physical space. 1 car, 5 people etc...
+        size:
+          type: number
+          description: (UNDOCUMENTED) Size in square feet.
+        timezone:
+          type: string
+          description: (UNDOCUMENTED) TZ database name timezone for the resource. https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+        access:
+          type: object
+          description: (UNDOCUMENTED) Booking access controls.
+          properties:
+            full:
+              type: boolean
+              description: Member portal level access.
+            public:
+              type: boolean
+              description: Self checkout by (new) non-members via a public calendar.
+            teams:
+              description: Restricted to a list of team IDs.
+              type: array
+              items:
+                type: string
+            plans:
+              description: Restricted to a list of plan IDs.
+              type: array
+              items:
+                type: string
 
     ResourceType:
       type: object
@@ -1852,7 +1884,7 @@ components:
           description: Additional information for the location of the event.
         timezone:
           type: string
-          description: The timezone of the event
+          description: TZ database name timezone of the event. https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
         image:
           type: string
           description: A url to an image for the event.
