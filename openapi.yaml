@@ -1330,48 +1330,53 @@ components:
           type: string
           description: (UNDOCUMENTED) Status calculated based on current contracts and memberships.
         details:
-          type: object
-          description: (UNDOCUMENTED) Billing details. If not provided address details will be used.
-          properties:
-            currency:
-              type: string
-            currencyConversionRate:
-              type: number
-            paymentMethod:
-              type: string
-              enum:
-                -
-                - Cash
-                - Bank Transfer
-                - POS
-                - Cheque
-            date:
-              type: number
-              description: Day of the month to bill.
-            membershipsPONumber:
-              type: string
-            name:
-              type: string
-            vatId:
-              type: string
-            regId:
-              type: string
-              description: Business registration number.
+          $ref: '#/components/schemas/TeamDetails'
         address:
-          type: object
-          description: (UNDOCUMENTED) Registered address.
-          properties:
-            address:
-              type: string
-            city:
-              type: string
-            state:
-              type: string
-            zip:
-              type: string
-            country:
-              type: string
+          $ref: '#/components/schemas/TeamAddress'
 
+    TeamDetails:
+      type: object
+      description: (UNDOCUMENTED) Billing details. If not provided address details will be used.
+      properties:
+        currency:
+          type: string
+        currencyConversionRate:
+          type: number
+        paymentMethod:
+          type: string
+          enum:
+            -
+            - Cash
+            - Bank Transfer
+            - POS
+            - Cheque
+        date:
+          type: number
+          description: Day of the month to bill.
+        membershipsPONumber:
+          type: string
+        name:
+          type: string
+        vatId:
+          type: string
+        regId:
+          type: string
+          description: Business registration number.
+
+    TeamAddress:
+      type: object
+      description: (UNDOCUMENTED) Registered address.
+      properties:
+        address:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zip:
+          type: string
+        country:
+          type: string
 
     Membership:
       type: object
