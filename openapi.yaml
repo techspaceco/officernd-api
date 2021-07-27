@@ -1362,6 +1362,24 @@ components:
         regId:
           type: string
           description: Business registration number.
+        differentAddress:
+          type: boolean
+          description: Different billing address from registered address.
+        address:
+          type: string
+          description: Billing Address - street address.
+        city:
+          type: string
+          description: Billing Address - city.
+        state:
+          type: string
+          description: Billing Address - state.
+        zip:
+          type: string
+          description: Billing Address - zip.
+        country:
+          type: string
+          description: Billing Address - country.
 
     TeamAddress:
       type: object
