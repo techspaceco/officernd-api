@@ -1333,6 +1333,10 @@ components:
           $ref: '#/components/schemas/TeamDetails'
         address:
           $ref: '#/components/schemas/TeamAddress'
+        startDate:
+          type: string
+          format: date-time
+          description: (UNDOCUMENTED) First ever move in date. Required for a valid Team record in the UI but not the API.
 
     TeamDetails:
       type: object
