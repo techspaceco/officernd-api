@@ -897,7 +897,7 @@ paths:
   /bookings/occurrences:
     get:
       summary: List
-      operationId: ListBookingOccurences
+      operationId: ListBookingOccurrences
       description: Get a list of all occurrences for a specified period.
       tags:
       - offices
