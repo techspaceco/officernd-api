@@ -947,9 +947,126 @@ paths:
   # TODO: /plans/{planId}
   # TODO: /rates
   # TODO: /{rateId}
-  # TODO: /resources
-  # TODO: /resources/{resourceId}
-  # TODO: /resource-types
+
+  /resources:
+    get:
+      summary: List
+      operationId: ListResources
+      description: |
+        Resource objects describe all type of bookable (short term bookings or long term assignments) resources in the system.
+
+        Resource types can be extended and modified, but the default ones are:
+
+        meeting rooms - meeting_room
+        private offices - team_room
+        private office desk - desk_tr
+        dedicated desks - desk
+        hot desks - hotdesk
+        You can retrieve individual resources as well as a list of all your resources or all of a specific type.
+      tags:
+      - resources
+      parameters:
+      - name: office
+        in: query
+        required: false
+        description: Filter by office id.
+        schema:
+          type: string
+      - name: name
+        in: query
+        required: false
+        description: The exact name of the item you are looking for. Also, you can use this property to perform a wildcard match.
+        schema:
+          type: string
+      - name: type
+        in: query
+        required: false
+        description: One of the possible resource types.
+        schema:
+          type: string
+      # TODO: availableFrom, availableTo.
+      # Unknown format. The documentation just says "date" which could be anything.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Resource'
+
+  /resources/{resourceId}:
+    get:
+      summary: Get
+      operationId: GetResource
+      description: Retrieve a resource by ID.
+      tags:
+      - resources
+      parameters:
+      - name: resourceId
+        in: path
+        required: true
+        description: Resource primary key.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
+
+  /resource-types:
+    get:
+      summary: List
+      operationId: ListResourceTypes
+      description: |
+        Resource types can be extended and modified, but the default ones are:
+
+        meeting rooms - meeting_room
+        private offices - team_room
+        private office desk - desk_tr
+        dedicated desks - desk
+        hot desks - hotdesk
+        Target types (Floorplan object type):
+
+        desk
+        zone
+        Booking modes:
+
+        time
+        date
+        Check-in modes:
+
+        half_day
+        day
+        You can retrieve a list of all your resource types.
+      tags:
+      - resource-types
+      parameters:
+      - name: type
+        in: query
+        required: false
+        description: One of the possible resource types.
+        schema:
+          type: string
+      - name: target
+        in: query
+        required: false
+        description: One of the possible resource target types.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ResourceType'
  
   /contracts:
     get:
@@ -1111,6 +1228,15 @@ components:
         public:
           type: boolean
           description: If true, the location is shown in the members portal; if false or omitted the location is not displayed in the members portal.
+        # Properties, slug and code are currently not documented in the official public API but required for a lot of useful integrations.
+        properties:
+          $ref: '#/components/schemas/Properties'
+        slug:
+          type: string
+          description: Unique URL slug.
+        code:
+          type: string
+          description: Unique code.
 
     Floor:
       type: object
@@ -1138,6 +1264,9 @@ components:
         targetRevenue:
           type: number
           description: The target revenue for the specified floor
+        # Properties are currently not documented in the official public API but required for a lot of useful integrations.
+        properties:
+          $ref: '#/components/schemas/Properties'
 
     Member:
       type: object
@@ -1198,6 +1327,9 @@ components:
         calculatedStatus:
           type: string
           description: The actual member status calculated by the platform. Please, refer to this article for more information https://help.officernd.com/hc/en-us/articles/360002210114-Member-Statuses-and-Labels
+        # Properties are currently not documented in the official public API but required for a lot of useful integrations.
+        properties:
+          $ref: '#/components/schemas/Properties'
 
     Team:
       type: object
@@ -1235,6 +1367,85 @@ components:
         modifiedBy:
           type: string
           description: The user that did the last modification to the team. Before the first modification, this field equals to the createdBy field.
+        # Properties, image, billing and address details are currently not documented in the official public API but required for a lot of useful integrations.
+        properties:
+          $ref: '#/components/schemas/Properties'
+        image:
+          type: string
+          description: (UNDOCUMENTED) Image brand image URL.
+        calculatedStatus:
+          type: string
+          description: (UNDOCUMENTED) Status calculated based on current contracts and memberships.
+        details:
+          $ref: '#/components/schemas/TeamDetails'
+        address:
+          $ref: '#/components/schemas/TeamAddress'
+        startDate:
+          type: string
+          format: date-time
+          description: (UNDOCUMENTED) First ever move in date. Required for a valid Team record in the UI but not the API.
+
+    TeamDetails:
+      type: object
+      description: (UNDOCUMENTED) Billing details. If not provided address details will be used.
+      properties:
+        currency:
+          type: string
+        currencyConversionRate:
+          type: number
+        paymentMethod:
+          type: string
+          enum:
+            -
+            - Cash
+            - Bank Transfer
+            - POS
+            - Cheque
+        date:
+          type: number
+          description: Day of the month to bill.
+        membershipsPONumber:
+          type: string
+        name:
+          type: string
+        vatId:
+          type: string
+        regId:
+          type: string
+          description: Business registration number.
+        differentAddress:
+          type: boolean
+          description: Different billing address from registered address.
+        address:
+          type: string
+          description: Billing Address - street address.
+        city:
+          type: string
+          description: Billing Address - city.
+        state:
+          type: string
+          description: Billing Address - state.
+        zip:
+          type: string
+          description: Billing Address - zip.
+        country:
+          type: string
+          description: Billing Address - country.
+
+    TeamAddress:
+      type: object
+      description: (UNDOCUMENTED) Registered address.
+      properties:
+        address:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zip:
+          type: string
+        country:
+          type: string
 
     Membership:
       type: object
@@ -1291,6 +1502,9 @@ components:
         locked:
           type: boolean
           description: If true, prevents editing the membership
+        # Properties are currently not documented in the official public API but required for a lot of useful integrations.
+        properties:
+          $ref: '#/components/schemas/Properties'
 
     Checkin:
       type: object
@@ -1385,6 +1599,10 @@ components:
         canceled:
           type: boolean
           description: Whether the booking got canceled or not. It also can be passed when calling the /summary endpoint.
+        # Properties are currently not documented in the official public API but required for a lot of useful integrations.
+        properties:
+          $ref: '#/components/schemas/Properties'
+
 
     BookingFee:
       type: object
@@ -1446,6 +1664,9 @@ components:
         isPersonal:
           type: boolean
           description: If true, the one-off charge is billed to the assigned member and not to the company.
+        # Properties are currently not documented in the official public API but required for a lot of useful integrations.
+        properties:
+          $ref: '#/components/schemas/Properties'
 
     Plan:
       type: object
@@ -1489,6 +1710,9 @@ components:
         code:
           type: string
           description: External identified for the plan. Usually used for accounting purposes.
+        # Properties are currently not documented in the official public API but required for a lot of useful integrations.
+        properties:
+          $ref: '#/components/schemas/Properties'
 
 # TODO: The Rates structure is undocumented.
 
@@ -1522,6 +1746,41 @@ components:
           items:
             type: string
           description: Array of resource ids which are parents of the current resource. Parents are only present for resource types with hierarchicalResourcesEnabled option set to true.
+        # Properties are currently not documented in the official public API but required for a lot of useful integrations.
+        properties:
+          $ref: '#/components/schemas/Properties'
+        image:
+          type: string
+          description: (UNDOCUMENTED) Image (useful for meeting rooms).
+        number:
+          type: number
+          description: (UNDOCUMENTED) Capacity if the resource is a physical space. 1 car, 5 people etc...
+        size:
+          type: number
+          description: (UNDOCUMENTED) Size in square feet.
+        timezone:
+          type: string
+          description: (UNDOCUMENTED) TZ database name timezone for the resource. https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+        access:
+          type: object
+          description: (UNDOCUMENTED) Booking access controls.
+          properties:
+            full:
+              type: boolean
+              description: Member portal level access.
+            public:
+              type: boolean
+              description: Self checkout by (new) non-members via a public calendar.
+            teams:
+              description: Restricted to a list of team IDs.
+              type: array
+              items:
+                type: string
+            plans:
+              description: Restricted to a list of plan IDs.
+              type: array
+              items:
+                type: string
 
     ResourceType:
       type: object
@@ -1628,6 +1887,9 @@ components:
           type: string
         status:
           type: string
+        # Properties are currently not documented in the official public API but required for a lot of useful integrations.
+        properties:
+          $ref: '#/components/schemas/Properties'
 
 # TODO: The Credit structure is undocumented.
 
@@ -1696,7 +1958,7 @@ components:
           description: Additional information for the location of the event.
         timezone:
           type: string
-          description: The timezone of the event
+          description: TZ database name timezone of the event. https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
         image:
           type: string
           description: A url to an image for the event.
@@ -1830,3 +2092,7 @@ components:
           type: string
           format: date-time
           description: The time of the event occurrence.
+
+    Properties:
+      type: object
+      description: (UNDOCUMENTED) custom properties associated with a record. The CRUD API to create custom properties is also undocumented.
