@@ -893,7 +893,54 @@ paths:
 
   # TODO: /bookings/summary
   # TODO: /bookings/checkout-summary
-  # TODO: /bookings/occurences
+
+  /bookings/occurrences:
+    get:
+      summary: List
+      operationId: ListBookingOccurences
+      description: Get a list of all occurrences for a specified period.
+      tags:
+      - offices
+      parameters:
+      - name: office
+        in: query
+        required: false
+        description: Filter by office id.
+        schema:
+          type: string
+      - name: member
+        in: query
+        required: false
+        description: Filter by member id.
+        schema:
+          type: string
+      - name: team
+        in: query
+        required: false
+        description: Filter by team id.
+        schema:
+          type: string
+      - name: start
+        in: query
+        required: true
+        description: Start ISO 8601 Date or DateTime of the interval to get occurrences for (inclusive).
+        schema:
+          type: string
+      - name: end
+        in: query
+        required: true
+        description: End ISO 8601 Date or DateTime of the interval to get occurrences for (inclusive).
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Booking'
   # TODO: /fees
   # TODO: /fees/{feeId}
   # TODO: /plans
