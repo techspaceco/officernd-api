@@ -945,7 +945,47 @@ paths:
   # TODO: /fees/{feeId}
   # TODO: /plans
   # TODO: /plans/{planId}
-  # TODO: /rates
+
+  /rates:
+    get:
+      summary: List
+      operationId: ListRates
+      description: |
+        The rate objects (or resource rates) describe available resource rates in the system. Rates are very similar to the plans.
+      tags:
+      - rates
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Rate'
+  /rates/{rateId}:
+    get:
+      summary: Get
+      operationId: GetRate
+      description: Retrieve a rate by ID.
+      tags:
+      - resources
+      parameters:
+      - name: rateId
+        in: path
+        required: true
+        description: Rate primary key.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rate'
+
+
   # TODO: /{rateId}
 
   /resources:
@@ -1506,6 +1546,99 @@ components:
         properties:
           $ref: '#/components/schemas/Properties'
 
+    Rate:
+      type: object
+      required:
+        - name
+        - extras
+        - amenities
+        - price
+        - locations
+        - intervalLength
+        - rates
+      properties:
+        _id:
+          type: string
+        account:
+          type: string
+          description: (UNDOCUMENTED) Revenue account ID.
+        name:
+          type: string
+          description: The name of the plan in hand. It appears everywhere in the system.
+        code:
+          type: string
+          description: (UNDOCUMENTED Billing code for the rate.
+        description:
+          type: string
+          description: Plain text description of the rate.
+        extras:
+          type: array
+          description: An array of _ids of the various extras associated with the rate. Each extra is the _id of a one-off billing plan.
+          items:
+            type: string
+        price:
+          type: number
+          description: The default hourly/daily price of the rate. If the rate consists of multiple rates, each one will have its own price.
+        locations:
+          type: array
+          description: List of all locations where the rate is present. If empty, all locations are assumed.
+          items:
+            type: string
+        intervalLength:
+          # Incorrectly marked as an object in the documentation. 
+          type: string
+          description: The interval of the rate - can be either day or hour.
+        rates:
+          type: array
+          description: Contains all rates and their respective intervals. If there's a resource rate, that has both daily rates and hourly rates, they'll present as a separate object with a different intervalQuantity and boolean properties for whether it's a weekend rate or a half-day rate
+          items:
+            # Undocumented. No idea what this structure is called internally. A RateRate? :P
+            type: object
+            required:
+              - intervalQuantity
+              - price
+            properties:
+              _id:
+                type: string
+              intervalQuantity:
+                type: number
+                description: (UNDOCUMENTED) The number of days/hours the rate is valid for
+              interval:
+                type: string
+                description: (UNDOCUMENTED) We've seen 'hour', 'day', 'week', 'month' in the wild. It may be the same as `/components/schemas/Rate.intervalLength`.
+              isHalfDayRate:
+                type: boolean
+                description: (UNDOCUMENTED) If true, the rate is valid only for half a day.
+              isOffRate:
+                type: boolean
+                description: (UNDOCUMENTED) If true, the rate is valid only for out of office hours and weekends.
+              isWeekendRate:
+                type: boolean
+                description: (UNDOCUMENTED) If true, the rate is valid only for weekends.
+              price:
+                type: number
+                description: (UNDOCUMENTED) The price of the rate
+        bookingPolicy:
+          type: string
+          description: The _id of the associated booking policy. It can be expanded into an object using $populate in order to get information on the policy itself (minDuration,maxDuration etc).
+        bookingCancellationPolicy:
+          type: string
+          description: The _id of the associated cancellation policy. It can be expanded into an object using $populate in order to get information on the policy itself (activeMemberConditions,nonActiveMemberConditions etc).
+        createdAt:
+          type: string
+          format: date-time
+          description: The date when the rate has been created.
+        createdBy:
+          type: string
+          description: The user that created the rate.
+        modifiedAt:
+          type: string
+          format: date-time
+          description: The user that did the last modification to the rate. If no update is made this field will match the createdBy field.
+        modifiedBy:
+          type: string
+          description: The user that did the last modification to the rate. Before the first modification, this field equals to the createdBy field.
+
     Checkin:
       type: object
       required:
@@ -1713,8 +1846,6 @@ components:
         # Properties are currently not documented in the official public API but required for a lot of useful integrations.
         properties:
           $ref: '#/components/schemas/Properties'
-
-# TODO: The Rates structure is undocumented.
 
     Resource:
       type: object
