@@ -943,8 +943,44 @@ paths:
                   $ref: '#/components/schemas/Booking'
   # TODO: /fees
   # TODO: /fees/{feeId}
-  # TODO: /plans
-  # TODO: /plans/{planId}
+
+  /plans:
+    get:
+      summary: List
+      operationId: ListPlans
+      description: Retrieve all plans.
+      tags:
+      - rates
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Plan'
+  /plans/{planId}:
+    get:
+      summary: Get
+      operationId: GetPlan
+      description: Retrieve a plan by ID.
+      tags:
+      - resources
+      parameters:
+      - name: planId
+        in: path
+        required: true
+        description: Plan primary key.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Plan'
 
   /rates:
     get:
@@ -1585,7 +1621,7 @@ components:
           items:
             type: string
         intervalLength:
-          # Incorrectly marked as an object in the documentation. 
+          # NOTE: Incorrectly marked as an object in the documentation.
           type: string
           description: The interval of the rate - can be either day or hour.
         rates:
