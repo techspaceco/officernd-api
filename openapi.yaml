@@ -1890,6 +1890,9 @@ components:
         - office
         - room
         - type
+        - target
+        - targetPlan
+        - availability
       properties:
         _id:
           type: string
@@ -1908,6 +1911,35 @@ components:
         type:
           type: string
           description: The type of the resource.
+        target:
+          type: string
+          description: |
+            (NOTE) The type is documented as 'read-only' but it's a string (at the time of writing).
+            
+            The _id of the floor plan object to which the resource is associated.
+            This shouldn't be edited apart from adjusting your floor plan through the admin UI.
+        targetPlan:
+          type: string
+          description: |
+            (NOTE) The type is documented as 'read-only' but it's a string (at the time of writing).
+            
+            The _id of the plan associated with the resource, if it's an assignable resource.
+            This determines the plan that will be used when assigning a membership for the resource.
+        availability:
+          type: array
+          description: |
+            Contains a single object with two parameters - startDate and endDate. The two dates determine the availability of the resourcee.
+            The "endDate" parameter can be set to null if the resource is available indefinitely.
+          items:
+            type: object
+            properties:
+              startDate:
+                type: string
+                format: date-time
+              endDate:
+                type: string
+                format: date-time
+
         parents:
           type: array
           items:
