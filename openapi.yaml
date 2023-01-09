@@ -1845,6 +1845,18 @@ components:
         - locations
         - type
         - intervalLength
+        - credits
+        - useValueCredits
+        - deposit
+        - depositPercent
+        - depositPercentEnabled
+        - public
+        - forTeamMembers
+        - forMembers
+        - forNonMembers
+        - prorate
+        - allowCancellation
+        - passes
       properties:
         _id:
           type: string
@@ -1882,6 +1894,87 @@ components:
         # Properties are currently not documented in the official public API but required for a lot of useful integrations.
         properties:
           $ref: '#/components/schemas/Properties'
+        createdAt:
+          type: string
+          format: date-time
+          description: The date when the plan has been created.
+        createdBy:
+          type: string
+          description: The user that created the plan.
+        modifiedAt:
+          type: string
+          format: date-time
+          description: The user that did the last modification to the plan. If no update is made this field will match the createdBy field.
+        modifiedBy:
+          type: string
+          description: The user that did the last modification to the plan. Before the first modification, this field equals to the createdBy field.
+        # The following fields are not documented in the official public API but required for a lot (most) useful integrations.
+        credits:
+          description: (UNDOCUMENTED) Allowance.
+          type: array
+          items:
+            type: object
+            required:
+              - type
+              - rates
+              - resourceTypes
+              - oneOffPlans
+              - goods
+              - validFor
+              - count
+            properties:
+              type:
+                type: string
+              rates:
+                type: array
+              resourceTypes:
+                type: array
+                description: (UNDOCUMENTED) Array of resource type IDs.
+                items:
+                  type: string
+              oneOffPlans:
+                type: array
+              goods:
+                type: array
+              validFor:
+                # TODO: Should this be an enum. We've seen 'resourceTypes' and 'all'.
+                type: string
+                description: (UNDOCUMENTED) "resourceTypes", "all".
+              count:
+                type: number
+        useValueCredits:
+          type: boolean
+          description: (UNDOCUMENTED)
+        deposit:
+          type: number
+          description: (UNDOCUMENTED) Fixed price deposit.
+        depositPercent:
+          type: number
+          description: (UNDOCUMENTED) Percentage.
+        depositPercentEnabled:
+          type: boolean
+          description: (UNDOCUMENTED) In practice this doesn't mean depositPercent actually has a valid value > 0.
+        public:
+          type: boolean
+          description: (UNDOCUMENTED)
+        forTeamMembers:
+          type: boolean
+          description: (UNDOCUMENTED)
+        forMembers:
+          type: boolean
+          description: (UNDOCUMENTED)
+        forNonMembers:
+          type: boolean
+          description: (UNDOCUMENTED)
+        prorate:
+          type: boolean
+          description: (UNDOCUMENTED)
+        allowCancellation:
+          type: boolean
+          description: (UNDOCUMENTED)
+        passes:
+          type: number
+          description: (UNDOCUMENTED)
 
     Resource:
       type: object
