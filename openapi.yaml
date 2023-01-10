@@ -1986,6 +1986,8 @@ components:
         - target
         - targetPlan
         - availability
+        - createdAt
+        - createdBy
       properties:
         _id:
           type: string
@@ -2082,6 +2084,13 @@ components:
         area:
           type: number
           description: (UNDOCUMENTED)
+        createdAt:
+          type: string
+          format: date-time
+          description: The date when the resource has been created at.
+        createdBy:
+          type: string
+          description: The user that created the resource.
 
     ResourceType:
       type: object
