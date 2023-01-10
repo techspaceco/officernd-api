@@ -2049,7 +2049,7 @@ components:
           description: (UNDOCUMENTED) Capacity if the resource is a physical space. 1 car, 5 people etc...
         size:
           type: number
-          description: (UNDOCUMENTED) Size in square feet.
+          description: (UNDOCUMENTED)
         timezone:
           type: string
           description: (UNDOCUMENTED) TZ database name timezone for the resource. https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
@@ -2073,6 +2073,15 @@ components:
               type: array
               items:
                 type: string
+        price:
+          type: number
+          description: (UNDOCUMENTED) Overrides the target plan or rate price. We think the priority is probably Price > Rate > Target Plan Price?
+        deposit:
+          type: number
+          description: (UNDOCUMENTED) 
+        area:
+          type: number
+          description: (UNDOCUMENTED)
 
     ResourceType:
       type: object
