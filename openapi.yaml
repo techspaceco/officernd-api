@@ -1325,6 +1325,9 @@ components:
         name:
           type: string
           description: The name of the floorplan - usually the floor number.
+        slug:
+          type: string
+          description: (UNDOCUMENTED) The unique URL slug for the floor.
         floor:
           type: string
           description: Optional floor number.
@@ -1343,6 +1346,17 @@ components:
         # Properties are currently not documented in the official public API but required for a lot of useful integrations.
         properties:
           $ref: '#/components/schemas/Properties'
+        createdAt:
+          type: string
+          format: date-time
+          description: The date when the floor was created.
+        createdBy:
+          type: string
+          description: The user that created the floor.
+        modifiedAt:
+          type: string
+          format: date-time
+          description: The date when the floor was last modified. Before the first modification, this field equals to the createdAt field.
 
     Member:
       type: object
