@@ -2048,7 +2048,6 @@ components:
               endDate:
                 type: string
                 format: date-time
-
         parents:
           type: array
           items:
@@ -2201,7 +2200,7 @@ components:
         resources:
           type: array
           items:
-            $ref: '#/components/schemas/Resource'
+            $ref: '#/components/schemas/ContractResource'
         notice:
           type: object
           properties:
@@ -2214,6 +2213,120 @@ components:
         # Properties are currently not documented in the official public API but required for a lot of useful integrations.
         properties:
           $ref: '#/components/schemas/Properties'
+
+    # The resource endpoints don't follow the documented API and return IDs for rate, office and room while contracts endpoints
+    # do follow the documentation and return nested objects. Until this is fixed Resource and ContractResource are two seaparate types.
+    ContractResource:
+      type: object
+      required:
+        - name
+        - office
+        - room
+        - type
+        - target
+        - targetPlan
+        - availability
+        - createdAt
+        - createdBy
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+          description: The name of the resource in hand.
+        rate:
+          $ref: '#/components/schemas/Rate'
+        office:
+          $ref: '#/components/schemas/Office'
+        room:
+          $ref: '#/components/schemas/Floor'
+        type:
+          type: string
+          description: The type of the resource.
+        target:
+          type: string
+          description: |
+            (NOTE) The type is documented as 'read-only' but it's a string (at the time of writing).
+            
+            The _id of the floor plan object to which the resource is associated.
+            This shouldn't be edited apart from adjusting your floor plan through the admin UI.
+        targetPlan:
+          type: string
+          description: |
+            (NOTE) The type is documented as 'read-only' but it's a string (at the time of writing).
+            
+            The _id of the plan associated with the resource, if it's an assignable resource.
+            This determines the plan that will be used when assigning a membership for the resource.
+        availability:
+          type: array
+          description: |
+            Contains a single object with two parameters - startDate and endDate. The two dates determine the availability of the resourcee.
+            The "endDate" parameter can be set to null if the resource is available indefinitely.
+          items:
+            type: object
+            properties:
+              startDate:
+                type: string
+                format: date-time
+              endDate:
+                type: string
+                format: date-time
+        parents:
+          type: array
+          items:
+            type: string
+          description: Array of resource ids which are parents of the current resource. Parents are only present for resource types with hierarchicalResourcesEnabled option set to true.
+        # Properties are currently not documented in the official public API but required for a lot of useful integrations.
+        properties:
+          $ref: '#/components/schemas/Properties'
+        image:
+          type: string
+          description: (UNDOCUMENTED) Image (useful for meeting rooms).
+        number:
+          type: number
+          description: (UNDOCUMENTED) Capacity if the resource is a physical space. 1 car, 5 people etc...
+        size:
+          type: number
+          description: (UNDOCUMENTED)
+        timezone:
+          type: string
+          description: (UNDOCUMENTED) TZ database name timezone for the resource. https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+        access:
+          type: object
+          description: (UNDOCUMENTED) Booking access controls.
+          properties:
+            full:
+              type: boolean
+              description: Member portal level access.
+            public:
+              type: boolean
+              description: Self checkout by (new) non-members via a public calendar.
+            teams:
+              description: Restricted to a list of team IDs.
+              type: array
+              items:
+                type: string
+            plans:
+              description: Restricted to a list of plan IDs.
+              type: array
+              items:
+                type: string
+        price:
+          type: number
+          description: (UNDOCUMENTED) Overrides the target plan or rate price. We think the priority is probably Price > Rate > Target Plan Price?
+        deposit:
+          type: number
+          description: (UNDOCUMENTED) 
+        area:
+          type: number
+          description: (UNDOCUMENTED)
+        createdAt:
+          type: string
+          format: date-time
+          description: The date when the resource has been created at.
+        createdBy:
+          type: string
+          description: The user that created the resource.
 
 # TODO: The Credit structure is undocumented.
 
