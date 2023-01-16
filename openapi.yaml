@@ -2161,6 +2161,20 @@ components:
       properties:
         _id:
           type: string
+        approveDate:
+          type: string
+          format: date-time
+        approvedBy:
+          type: object
+          required:
+            - userId
+          properties:
+            userId:
+              type: string
+            role:
+              type: string
+            displayName:
+              type: string
         resourcesTotal:
           type: number
         servicesTotal:
@@ -2190,9 +2204,8 @@ components:
         createdAt:
           type: string
           format: date-time
-        updatedAt:
+        createdBy:
           type: string
-          format: date-time
         plans:
           type: array
           items:
@@ -2203,13 +2216,40 @@ components:
             $ref: '#/components/schemas/ContractResource'
         notice:
           type: object
+          description: (UNDOCUMENTED)
           properties:
             months:
               type: number
         type:
           type: string
+          description: (UNDOCUMENTED)
         status:
           type: string
+          description: (UNDOCUMENTED)
+        stage:
+          type: string
+          description: (UNDOCUMENTED)
+          enum:
+            - served_notice
+            - expired
+            - active
+            - terminated
+            - not_renewed
+            - up_for_renewal
+        terminated:
+          type: object
+          description: (UNDOCUMENTED)
+          required:
+            - date
+            - reasonKey
+          properties:
+            comments:
+              type: string
+            date:
+              type: string
+              format: date-time
+            reasonKey:
+              type: string
         # Properties are currently not documented in the official public API but required for a lot of useful integrations.
         properties:
           $ref: '#/components/schemas/Properties'
