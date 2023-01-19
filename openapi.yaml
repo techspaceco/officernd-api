@@ -2354,6 +2354,9 @@ components:
         price:
           type: number
           description: (UNDOCUMENTED) Overrides the target plan or rate price. We think the priority is probably Price > Rate > Target Plan Price?
+        listPrice:
+          type: number
+          description: (UNDOCUMENTED)
         deposit:
           type: number
           description: (UNDOCUMENTED) 
@@ -2367,6 +2370,30 @@ components:
         createdBy:
           type: string
           description: The user that created the resource.
+        steps:
+          type: array
+          description: (UNDOCUMENTED)
+          items:
+            type: object
+            required:
+              - startDate
+              - endDate
+              - price
+              - calculatedDiscountAmount
+              - discountedPrice
+            properties:
+              startDate: 
+                type: string
+                format: date-time
+              endDate:
+                type: string
+                format: date-time
+              price:
+                type: number
+              calculatedDiscountAmount:
+                type: number
+              discountedPrice:  
+                type: number
 
 # TODO: The Credit structure is undocumented.
 
