@@ -1995,7 +1995,6 @@ components:
       required:
         - name
         - office
-        - room
         - type
         - target
         - targetPlan
