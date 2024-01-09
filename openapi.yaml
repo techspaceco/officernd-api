@@ -1431,6 +1431,9 @@ components:
         name:
           type: string
           description: The full name of the team
+        url:
+          type: string
+          description: (UNDOCUMENTED) The URL of the team
         email:
           type: string
           description: The email address of the team
