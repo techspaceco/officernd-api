@@ -33,6 +33,9 @@ paths:
       tags:
       - offices
       parameters:
+      - $ref: '#/components/parameters/LimitParam'
+      - $ref: '#/components/parameters/NextParam'
+      - $ref: '#/components/parameters/PrevParam'
       - name: name
         in: query
         required: false
@@ -42,6 +45,15 @@ paths:
       responses:
         '200':
           description: OK
+          headers:
+            rnd-cursor-next:
+              $ref: '#/components/headers/rnd-cursor-next'
+            rnd-cursor-prev:
+              $ref: '#/components/headers/rnd-cursor-prev'
+            rnd-range-start:
+              $ref: '#/components/headers/rnd-range-start'
+            rnd-range-end:
+              $ref: '#/components/headers/rnd-range-end'
           content:
             application/json:
               schema:
@@ -79,6 +91,9 @@ paths:
       tags:
       - offices
       parameters:
+      - $ref: '#/components/parameters/LimitParam'
+      - $ref: '#/components/parameters/NextParam'
+      - $ref: '#/components/parameters/PrevParam'
       - name: name
         in: query
         required: false
@@ -94,6 +109,15 @@ paths:
       responses:
         '200':
           description: OK
+          headers:
+            rnd-cursor-next:
+              $ref: '#/components/headers/rnd-cursor-next'
+            rnd-cursor-prev:
+              $ref: '#/components/headers/rnd-cursor-prev'
+            rnd-range-start:
+              $ref: '#/components/headers/rnd-range-start'
+            rnd-range-end:
+              $ref: '#/components/headers/rnd-range-end'
           content:
             application/json:
               schema:
@@ -131,6 +155,9 @@ paths:
       tags:
       - offices
       parameters:
+      - $ref: '#/components/parameters/LimitParam'
+      - $ref: '#/components/parameters/NextParam'
+      - $ref: '#/components/parameters/PrevParam'
       - name: modifiedAt.$gt
         in: query
         required: false
@@ -180,6 +207,15 @@ paths:
       responses:
         '200':
           description: OK
+          headers:
+            rnd-cursor-next:
+              $ref: '#/components/headers/rnd-cursor-next'
+            rnd-cursor-prev:
+              $ref: '#/components/headers/rnd-cursor-prev'
+            rnd-range-start:
+              $ref: '#/components/headers/rnd-range-start'
+            rnd-range-end:
+              $ref: '#/components/headers/rnd-range-end'
           content:
             application/json:
               schema:
@@ -280,6 +316,9 @@ paths:
       tags:
       - offices
       parameters:
+      - $ref: '#/components/parameters/LimitParam'
+      - $ref: '#/components/parameters/NextParam'
+      - $ref: '#/components/parameters/PrevParam'
       - name: modifiedAt.$gt
         in: query
         required: false
@@ -323,6 +362,15 @@ paths:
       responses:
         '200':
           description: OK
+          headers:
+            rnd-cursor-next:
+              $ref: '#/components/headers/rnd-cursor-next'
+            rnd-cursor-prev:
+              $ref: '#/components/headers/rnd-cursor-prev'
+            rnd-range-start:
+              $ref: '#/components/headers/rnd-range-start'
+            rnd-range-end:
+              $ref: '#/components/headers/rnd-range-end'
           content:
             application/json:
               schema:
@@ -423,6 +471,9 @@ paths:
       tags:
       - offices
       parameters:
+      - $ref: '#/components/parameters/LimitParam'
+      - $ref: '#/components/parameters/NextParam'
+      - $ref: '#/components/parameters/PrevParam'
       - name: $populate
         in: query
         required: false
@@ -444,6 +495,15 @@ paths:
       responses:
         '200':
           description: OK
+          headers:
+            rnd-cursor-next:
+              $ref: '#/components/headers/rnd-cursor-next'
+            rnd-cursor-prev:
+              $ref: '#/components/headers/rnd-cursor-prev'
+            rnd-range-start:
+              $ref: '#/components/headers/rnd-range-start'
+            rnd-range-end:
+              $ref: '#/components/headers/rnd-range-end'
           content:
             application/json:
               schema:
@@ -544,6 +604,9 @@ paths:
       tags:
       - offices
       parameters:
+      - $ref: '#/components/parameters/LimitParam'
+      - $ref: '#/components/parameters/NextParam'
+      - $ref: '#/components/parameters/PrevParam'
       - name: modifiedAt.$gt
         in: query
         required: false
@@ -593,6 +656,15 @@ paths:
       responses:
         '200':
           description: OK
+          headers:
+            rnd-cursor-next:
+              $ref: '#/components/headers/rnd-cursor-next'
+            rnd-cursor-prev:
+              $ref: '#/components/headers/rnd-cursor-prev'
+            rnd-range-start:
+              $ref: '#/components/headers/rnd-range-start'
+            rnd-range-end:
+              $ref: '#/components/headers/rnd-range-end'
           content:
             application/json:
               schema:
@@ -666,6 +738,9 @@ paths:
       tags:
       - offices
       parameters:
+      - $ref: '#/components/parameters/LimitParam'
+      - $ref: '#/components/parameters/NextParam'
+      - $ref: '#/components/parameters/PrevParam'
       - name: office
         in: query
         required: false
@@ -687,6 +762,15 @@ paths:
       responses:
         '200':
           description: OK
+          headers:
+            rnd-cursor-next:
+              $ref: '#/components/headers/rnd-cursor-next'
+            rnd-cursor-prev:
+              $ref: '#/components/headers/rnd-cursor-prev'
+            rnd-range-start:
+              $ref: '#/components/headers/rnd-range-start'
+            rnd-range-end:
+              $ref: '#/components/headers/rnd-range-end'
           content:
             application/json:
               schema:
@@ -902,6 +986,9 @@ paths:
       tags:
       - offices
       parameters:
+      - $ref: '#/components/parameters/LimitParam'
+      - $ref: '#/components/parameters/NextParam'
+      - $ref: '#/components/parameters/PrevParam'
       - name: office
         in: query
         required: false
@@ -935,6 +1022,15 @@ paths:
       responses:
         '200':
           description: OK
+          headers:
+            rnd-cursor-next:
+              $ref: '#/components/headers/rnd-cursor-next'
+            rnd-cursor-prev:
+              $ref: '#/components/headers/rnd-cursor-prev'
+            rnd-range-start:
+              $ref: '#/components/headers/rnd-range-start'
+            rnd-range-end:
+              $ref: '#/components/headers/rnd-range-end'
           content:
             application/json:
               schema:
@@ -951,9 +1047,22 @@ paths:
       description: Retrieve all plans.
       tags:
       - rates
+      parameters:
+      - $ref: '#/components/parameters/LimitParam'
+      - $ref: '#/components/parameters/NextParam'
+      - $ref: '#/components/parameters/PrevParam'
       responses:
         '200':
           description: OK
+          headers:
+            rnd-cursor-next:
+              $ref: '#/components/headers/rnd-cursor-next'
+            rnd-cursor-prev:
+              $ref: '#/components/headers/rnd-cursor-prev'
+            rnd-range-start:
+              $ref: '#/components/headers/rnd-range-start'
+            rnd-range-end:
+              $ref: '#/components/headers/rnd-range-end'
           content:
             application/json:
               schema:
@@ -990,9 +1099,22 @@ paths:
         The rate objects (or resource rates) describe available resource rates in the system. Rates are very similar to the plans.
       tags:
       - rates
+      parameters:
+      - $ref: '#/components/parameters/LimitParam'
+      - $ref: '#/components/parameters/NextParam'
+      - $ref: '#/components/parameters/PrevParam'
       responses:
         '200':
           description: OK
+          headers:
+            rnd-cursor-next:
+              $ref: '#/components/headers/rnd-cursor-next'
+            rnd-cursor-prev:
+              $ref: '#/components/headers/rnd-cursor-prev'
+            rnd-range-start:
+              $ref: '#/components/headers/rnd-range-start'
+            rnd-range-end:
+              $ref: '#/components/headers/rnd-range-end'
           content:
             application/json:
               schema:
@@ -1042,6 +1164,9 @@ paths:
       tags:
       - resources
       parameters:
+      - $ref: '#/components/parameters/LimitParam'
+      - $ref: '#/components/parameters/NextParam'
+      - $ref: '#/components/parameters/PrevParam'
       - name: office
         in: query
         required: false
@@ -1065,6 +1190,15 @@ paths:
       responses:
         '200':
           description: OK
+          headers:
+            rnd-cursor-next:
+              $ref: '#/components/headers/rnd-cursor-next'
+            rnd-cursor-prev:
+              $ref: '#/components/headers/rnd-cursor-prev'
+            rnd-range-start:
+              $ref: '#/components/headers/rnd-range-start'
+            rnd-range-end:
+              $ref: '#/components/headers/rnd-range-end'
           content:
             application/json:
               schema:
@@ -1122,6 +1256,9 @@ paths:
       tags:
       - resource-types
       parameters:
+      - $ref: '#/components/parameters/LimitParam'
+      - $ref: '#/components/parameters/NextParam'
+      - $ref: '#/components/parameters/PrevParam'
       - name: type
         in: query
         required: false
@@ -1137,6 +1274,15 @@ paths:
       responses:
         '200':
           description: OK
+          headers:
+            rnd-cursor-next:
+              $ref: '#/components/headers/rnd-cursor-next'
+            rnd-cursor-prev:
+              $ref: '#/components/headers/rnd-cursor-prev'
+            rnd-range-start:
+              $ref: '#/components/headers/rnd-range-start'
+            rnd-range-end:
+              $ref: '#/components/headers/rnd-range-end'
           content:
             application/json:
               schema:
@@ -1152,6 +1298,9 @@ paths:
       tags:
       - contracts
       parameters:
+      - $ref: '#/components/parameters/LimitParam'
+      - $ref: '#/components/parameters/NextParam'
+      - $ref: '#/components/parameters/PrevParam'
       - name: office
         in: query
         required: false
@@ -1167,6 +1316,15 @@ paths:
       responses:
         '200':
           description: OK
+          headers:
+            rnd-cursor-next:
+              $ref: '#/components/headers/rnd-cursor-next'
+            rnd-cursor-prev:
+              $ref: '#/components/headers/rnd-cursor-prev'
+            rnd-range-start:
+              $ref: '#/components/headers/rnd-range-start'
+            rnd-range-end:
+              $ref: '#/components/headers/rnd-range-end'
           content:
             application/json:
               schema:
@@ -1256,6 +1414,50 @@ paths:
     # TODO: /user/checkins/visitor/{visitorId}
 
 components:
+  parameters:
+    LimitParam:
+      name: $limit
+      in: query
+      description: Limits the number of results returned. Default is 100, and maximum is 100.
+      schema:
+        type: integer
+        default: 100
+        maximum: 100
+    NextParam:
+      name: $next
+      in: query
+      description: Pointer to the start of the current page for pagination.
+      schema:
+        type: string
+    PrevParam:
+      name: $prev
+      in: query
+      description: Pointer to the previous page for pagination.
+      schema:
+        type: string
+
+  headers:
+    rnd-cursor-next:
+      required: true
+      description: Cursor pointer to the next page.
+      schema:
+        type: string
+    rnd-cursor-prev:
+      required: true
+      description: Cursor pointer to the previous page.
+      schema:
+        type: string
+    rnd-range-start:
+      required: true
+      description: Numeric index of the first returned item.
+      schema:
+        type: integer
+    rnd-range-end:
+      required: true
+      description: Numeric index of the last returned item.
+      schema:
+        type: integer
+    
   securitySchemes:
     oauth2:
       type: oauth2
