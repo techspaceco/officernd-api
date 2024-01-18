@@ -1397,7 +1397,42 @@ paths:
     # TODO: /reports/occupancy
     # TODO: /reports/occupancy/by-customer
     # TODO: /reports/occupancy/assignable-stats
-    # TODO: /auth/member
+
+  /auth/member:
+    post:
+      summary: Auth Member
+      operationId: AuthMember
+      description: |
+        Authenticate member by given email. Returns the access token to login (impersonate) as a member.
+        The authentication token returned by this endpoint can be used to generate quick login links to the members portal. You just need to add access_token=<token> to the URL.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+                  description: The email of the member.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - token
+                properties:
+                  token:
+                    type: string
+                    description: The access token to be used for authentication.    
+
+
     # TODO: /auth/signin
     # TODO: /signup
     # TODO: /checkout
