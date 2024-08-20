@@ -1384,6 +1384,65 @@ paths:
     # TODO: /events/{eventId}
     # TODO: /visits
     # TODO: /visits/{visitId}
+
+  /visits:
+    get:
+      summary: List
+      operationId: ListVisits
+      description: Retrieve all visits.
+      tags:
+      - visits
+      parameters:
+      - $ref: '#/components/parameters/LimitParam'
+      - $ref: '#/components/parameters/NextParam'
+      - $ref: '#/components/parameters/PrevParam'
+      - name: start.$gt
+        in: query
+        description: All items starting after the pointed date.
+        required: false
+        schema:
+          type: string
+          format: date
+      - name: start.$lt
+        in: query
+        description: All items starting before the pointed date.
+        required: false
+        schema:
+          type: string
+          format: date
+      - name: end.$gt
+        in: query
+        description: All items ending after the pointed date.
+        required: false
+        schema:
+          type: string
+          format: date
+      - name: end.$lt
+        in: query
+        description: All items ending before the pointed date.
+        required: false
+        schema:
+          type: string
+          format: date
+      responses:
+        '200':
+          description: OK
+          headers:
+            rnd-cursor-next:
+              $ref: '#/components/headers/rnd-cursor-next'
+            rnd-cursor-prev:
+              $ref: '#/components/headers/rnd-cursor-prev'
+            rnd-range-start:
+              $ref: '#/components/headers/rnd-range-start'
+            rnd-range-end:
+              $ref: '#/components/headers/rnd-range-end'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Visit'
+
     # TODO: /visitors
     # TODO: /payments
     # TODO: /payments/{paymentId}
@@ -2709,7 +2768,40 @@ components:
           type: number
           description: The number of participants that this event will host.
 
-# TODO: The Visit structure is undocumented.
+    Visit:
+      type: object
+      required:
+        - _id
+        - office
+        - visitor
+        - team
+        - member
+        - end
+        - start
+      properties:
+        _id:
+          type: string
+          description: The unique identifier for the visit
+        office:
+          type: string
+          description: The location where the visit took place
+        visitor:
+          type: string
+          description: The visitor that visited the location
+        team:
+          type: string
+          description: The team with which the visit is associated
+        member:
+          type: string
+          description: The member with which the visit is associated
+        end:
+          type: string
+          format: date-time
+          description: The end date and time of the visit
+        start:
+          type: string
+          format: date-time
+          description: The start date and time of the visit
 
     Visitor:
       type: object
