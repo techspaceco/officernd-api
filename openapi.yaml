@@ -1007,6 +1007,12 @@ paths:
         description: Filter by team id.
         schema:
           type: string
+      - name: resourceId
+        in: query
+        required: false
+        description: Filter by resource id.
+        schema:
+          type: string
       - name: start
         in: query
         required: true
