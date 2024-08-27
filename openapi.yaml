@@ -2099,6 +2099,14 @@ components:
         canceled:
           type: boolean
           description: Whether the booking got canceled or not. It also can be passed when calling the /summary endpoint.
+        createdAt:
+          type: string
+          format: date-time
+          description: (UNDOCUMENTED) The time when the booking was created.
+        modifiedAt:
+          type: string
+          format: date-time
+          description: (UNDOCUMENTED) The time when the booking was last modified.
         reference:
           type: string
           description: (UNDOCUMENTED) Reference code.
