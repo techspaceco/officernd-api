@@ -759,6 +759,18 @@ paths:
         description: Filter by team id.
         schema:
           type: string
+      - name: seriesStart.$gte
+        in: query
+        required: false
+        description: "Filter by start date of the booking series. (UNDOCUMENTED: We think ISO 8601 Date or DateTime)"
+        schema:
+          type: string
+      - name: seriesEnd.$lte
+        in: query
+        required: false
+        description: "Filter by end date of the booking series. (UNDOCUMENTED: We think ISO 8601 Date or DateTime)"
+        schema:
+          type: string
       responses:
         '200':
           description: OK
