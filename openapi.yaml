@@ -2093,6 +2093,8 @@ components:
         fees:
           type: array
           description: Array of items describing how the booking will be charged for. Described below as BookingFee.
+          items:
+            $ref: '#/components/schemas/BookingFee'
         extras:
           type: object
           description: Dictionary with keys the IDs of the extras to add to the booking and values - the quantity of the extra
