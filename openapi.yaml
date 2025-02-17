@@ -1550,12 +1550,14 @@ components:
 
   headers:
     rnd-cursor-next:
-      required: true
+      # (UNDOCUMENTED) in the official API but optionally returned.
+      required: false
       description: Cursor pointer to the next page.
       schema:
         type: string
     rnd-cursor-prev:
-      required: true
+      # (UNDOCUMENTED) in the official API but optionally returned.
+      required: false
       description: Cursor pointer to the previous page.
       schema:
         type: string
@@ -1676,7 +1678,8 @@ components:
       type: object
       required:
         - name
-        - email
+        # (BUG) Email is documented as required but isn't in API.
+        # - email
       properties:
         _id:
           type: string
@@ -1686,6 +1689,8 @@ components:
         email:
           type: string
           description: The email address of the member
+          # (UNDOCUMENTED) The value can be null or string.
+          nullable: true
         phone:
           type: string
           description: The primary phone number of the member
@@ -1695,6 +1700,8 @@ components:
         team:
           type: string
           description: Reference to the team the member belongs to
+          # (UNDOCUMENTED) The value can be null or string.
+          nullable: true
         contactPerson:
           type: boolean
           description: True if the member is a contact person in his company
@@ -1778,6 +1785,8 @@ components:
         properties:
           $ref: '#/components/schemas/Properties'
         image:
+          # (UNDOCUMENTED) The value can be null or string.
+          nullable: true
           type: string
           description: (UNDOCUMENTED) Image brand image URL.
         calculatedStatus:
@@ -1797,18 +1806,26 @@ components:
       description: (UNDOCUMENTED) Billing details. If not provided address details will be used.
       properties:
         currency:
+          # (BUG) Should always be set? Default to Office currency?
+          nullable: true
           type: string
         currencyConversionRate:
+          # (BUG) Should always be set? Default to Office currency conversion rate?
+          nullable: true
           type: number
         paymentMethod:
+          # (UNDOCUMENTED) Can also be null.
+          nullable: true
           type: string
           enum:
-            -
+            - ''
             - Cash
             - Bank Transfer
             - POS
             - Cheque
         date:
+          # (BUG) Should always be set?
+          nullable: true
           type: number
           description: Day of the month to bill.
         membershipsPONumber:
