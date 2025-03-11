@@ -2144,8 +2144,10 @@ components:
           format: date-time
           description: The date of the occurrence the fee has been generated for
         fee:
-          $ref: '#/components/schemas/Fee'
-          description: The actual charge generated for this occurrence.
+          oneOf:
+            - $ref: '#/components/schemas/Fee'
+            - $ref: '#/components/schemas/FeeID'
+          description: The actual charge generated for this occurrence. (NOTE) Webhooks inexplicably return an ID which does not match the documentation.
         credits:
           type: array
           description: The credits used for the booking
@@ -2154,6 +2156,9 @@ components:
           items:
             $ref: '#/components/schemas/Fee'
           description: Array of fees generated for the extras.
+
+    FeeID:
+      type: string
 
     Fee:
       type: object
